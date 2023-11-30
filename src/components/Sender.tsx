@@ -35,9 +35,11 @@ const Sender: React.FC<{ token: string; user: User | null }> = ({
     const socket = io("http://localhost:8000/");
 
     socket.on("parcel.created", (parcel: Parcel) => {
-      setParcels((parcels) => {
-        return [...parcels, parcel];
-      });
+      if (parcel.sender === user?.id) {
+        setParcels((parcels) => {
+          return [...parcels, parcel];
+        });
+      }
     });
 
     return () => {
