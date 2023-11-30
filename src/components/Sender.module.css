@@ -49,3 +49,7 @@
   align-items: center;
   margin: 5px auto;
 }
+
+.title {
+  font-weight: bold;
+}

@@ -89,12 +89,35 @@ const Biker: React.FC<{ token: string; user: User | null }> = ({
         {parcels.map((parcel) => {
           return (
             <div className={styles.parcel} key={parcel.id}>
-              <span>Name: {parcel.name}</span>
-              <span>Pick-up: {parcel.pickupAddress}</span>
-              <span>Dropp-off: {parcel.dropoffAddress}</span>
-              <span>SenderID: {parcel.sender}</span>
-              <span>BikerID: {parcel?.biker || "--"}</span>
-              <span>Status: {parcel?.biker ? "Picked" : "Not Picked"}</span>
+              <span>
+                <span className={styles.title}>Name</span>
+                <br /> {parcel.name}
+              </span>
+              <span>
+                <span className={styles.title}>Pick-up</span>
+                <br />
+                {parcel.pickupAddress}
+              </span>
+              <span>
+                <span className={styles.title}>Dropp-off</span>
+                <br />
+                {parcel.dropoffAddress}
+              </span>
+              <span>
+                <span className={styles.title}>SenderID</span>
+                <br />
+                {parcel.sender}
+              </span>
+              <span>
+                <span className={styles.title}>BikerID</span>
+                <br />
+                {parcel?.biker || "--"}
+              </span>
+              <span>
+                <span className={styles.title}>Status</span>
+                <br />
+                {parcel?.biker ? "Picked" : "Not Picked"}
+              </span>
               {parcel?.biker ? null : (
                 <span>
                   <button
