@@ -1,53 +1,64 @@
-import React from "react";
-import { Button, Checkbox, Form, Input } from "antd";
-
-type FieldType = {
-  name?: string;
-  password?: string;
-};
+import axios from "axios";
+import { FormEventHandler, useState } from "react";
 
 const Login: React.FC = () => {
-  const onFinish = (values: any) => {
-    console.log("Success:", values);
-  };
+  const [name, setName] = useState<string>("");
+  const [password, setPassword] = useState("");
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
+  const onFinish: FormEventHandler<HTMLFormElement> = async (e) => {
+    try {
+      e.preventDefault();
+      const response = await axios.post(
+        "http://localhost:8000/authentication/login",
+        {
+          name,
+          password,
+        }
+      );
+      console.log({
+        response,
+      });
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log(error.response?.data.message);
+      } else {
+        console.log((error as Error).message);
+      }
+    }
   };
 
   return (
-    <Form
-      name="basic"
-      labelCol={{ span: 8 }}
-      wrapperCol={{ span: 16 }}
-      style={{ maxWidth: 600 }}
-      initialValues={{ remember: true }}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      autoComplete="off"
-    >
-      <Form.Item<FieldType>
-        label="Name"
-        name="name"
-        rules={[{ required: true, message: "Please input your name!" }]}
-      >
-        <Input />
-      </Form.Item>
-
-      <Form.Item<FieldType>
-        label="Password"
-        name="password"
-        rules={[{ required: true, message: "Please input your password!" }]}
-      >
-        <Input.Password />
-      </Form.Item>
-
-      <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item>
-    </Form>
+    <form onSubmit={onFinish} className="">
+      <div className="form-example">
+        <label htmlFor="name">Name: </label>
+        <input
+          type="text"
+          name="name"
+          id="name"
+          required
+          onChange={(e) => {
+            e.preventDefault();
+            setName(e.target.value);
+          }}
+        />
+      </div>
+      <div className="form-example">
+        <label htmlFor="password">Password: </label>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          required
+          onChange={(e) => {
+            e.preventDefault();
+            setPassword(e.target.value);
+          }}
+        />
+      </div>
+      <div className="form-example">
+        <input type="submit" value="Login" />
+      </div>
+    </form>
   );
 };
 
