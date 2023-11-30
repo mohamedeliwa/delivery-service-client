@@ -11,9 +11,9 @@ const Sender: React.FC<{ token: string; user: User | null }> = ({
 }) => {
   const [parcels, setParcels] = useState<Parcel[]>([]);
   const [createParcelDto, setCreateParcelDto] = useState<CreateParcelDto>({
-    name: "",
-    pickupAddress: "",
-    dropoffAddress: "",
+    name: "parcel-1",
+    pickupAddress: "London",
+    dropoffAddress: "NY city",
     sender: user?.id || 0,
   });
 
@@ -98,6 +98,7 @@ const Sender: React.FC<{ token: string; user: User | null }> = ({
               name="name"
               id="name"
               required
+              value={createParcelDto.name}
               onChange={(e) => {
                 e.preventDefault();
                 setCreateParcelDto((parcel) => {
@@ -116,6 +117,7 @@ const Sender: React.FC<{ token: string; user: User | null }> = ({
               name="pickupAddress"
               id="pickupAddress"
               required
+              value={createParcelDto.pickupAddress}
               onChange={(e) => {
                 e.preventDefault();
                 setCreateParcelDto((parcel) => {
@@ -134,6 +136,7 @@ const Sender: React.FC<{ token: string; user: User | null }> = ({
               name="dropoffAddress"
               id="dropoffAddress"
               required
+              value={createParcelDto.dropoffAddress}
               onChange={(e) => {
                 e.preventDefault();
                 setCreateParcelDto((parcel) => {

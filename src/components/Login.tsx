@@ -9,8 +9,8 @@ const Login: React.FC<{
   setToken: (token: string) => void;
   setUser: (user: User) => void;
 }> = ({ token, user, setToken, setUser }) => {
-  const [name, setName] = useState<string>("");
-  const [password, setPassword] = useState("");
+  const [name, setName] = useState<string>("sender_1");
+  const [password, setPassword] = useState("password");
 
   const onFinish: FormEventHandler<HTMLFormElement> = async (e) => {
     try {
@@ -50,6 +50,7 @@ const Login: React.FC<{
           name="name"
           id="name"
           required
+          value={name}
           onChange={(e) => {
             e.preventDefault();
             setName(e.target.value);
@@ -63,6 +64,7 @@ const Login: React.FC<{
           name="password"
           id="password"
           required
+          value={password}
           onChange={(e) => {
             e.preventDefault();
             setPassword(e.target.value);
