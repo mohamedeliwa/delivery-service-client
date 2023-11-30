@@ -42,7 +42,7 @@
 .parcel {
   border: 1px solid;
   border-radius: 3px;
-  min-width: 50vw;
+  min-width: 90vw;
   min-height: 30px;
   display: flex;
   justify-content: space-around;
