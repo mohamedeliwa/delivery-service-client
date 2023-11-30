@@ -12,7 +12,6 @@ const inter = Inter({ subsets: ["latin"] });
 export default function Home() {
   const [token, setToken] = useState<string>("");
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
 
   return (
     <>

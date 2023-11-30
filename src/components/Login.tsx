@@ -11,6 +11,7 @@ const Login: React.FC<{
 }> = ({ token, user, setToken, setUser }) => {
   const [name, setName] = useState<string>("sender_1");
   const [password, setPassword] = useState("password");
+  const [error, setError] = useState<any>(null);
 
   const onFinish: FormEventHandler<HTMLFormElement> = async (e) => {
     try {
@@ -35,46 +36,51 @@ const Login: React.FC<{
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log(error.response?.data.message);
+        setError(error.response?.data.message);
       } else {
         console.log((error as Error).message);
+        setError((error as Error).message);
       }
     }
   };
 
   return (
-    <form onSubmit={onFinish} className={styles.form}>
-      <div className={styles.inputContainer}>
-        <label htmlFor="name">Name: </label>
-        <input
-          type="text"
-          name="name"
-          id="name"
-          required
-          value={name}
-          onChange={(e) => {
-            e.preventDefault();
-            setName(e.target.value);
-          }}
-        />
-      </div>
-      <div className={styles.inputContainer}>
-        <label htmlFor="password">Password: </label>
-        <input
-          type="password"
-          name="password"
-          id="password"
-          required
-          value={password}
-          onChange={(e) => {
-            e.preventDefault();
-            setPassword(e.target.value);
-          }}
-        />
-      </div>
-      <div className={styles.buttonContainer}>
-        <input className={styles.button} type="submit" value="Login" />
-      </div>
-    </form>
+    <>
+      <form onSubmit={onFinish} className={styles.form}>
+        <div className={styles.inputContainer}>
+          <label htmlFor="name">Name: </label>
+          <input
+            type="text"
+            name="name"
+            id="name"
+            required
+            value={name}
+            onChange={(e) => {
+              e.preventDefault();
+              setName(e.target.value);
+            }}
+          />
+        </div>
+        <div className={styles.inputContainer}>
+          <label htmlFor="password">Password: </label>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            required
+            value={password}
+            onChange={(e) => {
+              e.preventDefault();
+              setPassword(e.target.value);
+            }}
+          />
+        </div>
+        <div className={styles.buttonContainer}>
+          <input className={styles.button} type="submit" value="Login" />
+        </div>
+      </form>
+      {error && <div>{JSON.stringify(error)}</div>}
+    </>
   );
 };
 
