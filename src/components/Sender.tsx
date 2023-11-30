@@ -45,7 +45,7 @@ const Sender: React.FC<{ token: string; user: User | null }> = ({
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, [user?.id]);
 
   const createParcel: React.FormEventHandler<HTMLFormElement> = async (e) => {
     try {
