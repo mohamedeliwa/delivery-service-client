@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import Login from "@/components/Login";
 import Sender from "@/components/Sender";
+import Biker from "@/components/Biker";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,7 +18,8 @@ export default function Home() {
       </Head>
       <main className={`${styles.main} ${inter.className}`}>
         {/* <Login /> */}
-        <Sender />
+        {/* <Sender /> */}
+        <Biker />
       </main>
     </>
   );

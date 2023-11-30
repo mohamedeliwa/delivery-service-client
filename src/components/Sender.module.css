@@ -35,15 +35,17 @@
   min-height: 30px;
   min-width: 60px;
 }
+.button:hover {
+  cursor: pointer;
+}
 
 .parcel {
-    border: 1px solid;
-    border-radius: 3px;
-    min-width: 50vw;
-    min-height: 30px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin: 5px auto;
-
+  border: 1px solid;
+  border-radius: 3px;
+  min-width: 50vw;
+  min-height: 30px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 5px auto;
 }
