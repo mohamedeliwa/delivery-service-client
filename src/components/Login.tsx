@@ -1,4 +1,5 @@
 import axios from "axios";
+import styles from "./Login.module.css";
 import { FormEventHandler, useState } from "react";
 
 const Login: React.FC = () => {
@@ -28,8 +29,8 @@ const Login: React.FC = () => {
   };
 
   return (
-    <form onSubmit={onFinish} className="">
-      <div className="form-example">
+    <form onSubmit={onFinish} className={styles.form}>
+      <div className={styles.inputContainer}>
         <label htmlFor="name">Name: </label>
         <input
           type="text"
@@ -42,7 +43,7 @@ const Login: React.FC = () => {
           }}
         />
       </div>
-      <div className="form-example">
+      <div className={styles.inputContainer}>
         <label htmlFor="password">Password: </label>
         <input
           type="password"
@@ -55,8 +56,8 @@ const Login: React.FC = () => {
           }}
         />
       </div>
-      <div className="form-example">
-        <input type="submit" value="Login" />
+      <div className={styles.buttonContainer}>
+        <input className={styles.button} type="submit" value="Login" />
       </div>
     </form>
   );
