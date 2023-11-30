@@ -62,10 +62,28 @@ const Biker: React.FC<{ token: string; user: User | null }> = ({
   const handlePicking = async (parcelID: number) => {
     try {
       const response = await axios.patch(
-        `http://localhost:8000/parcels/${parcelID}`,
+        `http://localhost:8000/parcels/pick/${parcelID}`,
+        {},
         {
-          biker: user?.id,
-        },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log(error.response?.data.message);
+      } else {
+        console.log((error as Error).message);
+      }
+    }
+  };
+
+  const handleDropping = async (parcelID: number) => {
+    try {
+      const response = await axios.patch(
+        `http://localhost:8000/parcels/drop/${parcelID}`,
+        {},
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -103,22 +121,44 @@ const Biker: React.FC<{ token: string; user: User | null }> = ({
                 <br />
                 {parcel.dropoffAddress}
               </span>
-              <span>
-                <span className={styles.title}>SenderID</span>
-                <br />
-                {parcel.sender}
-              </span>
-              <span>
-                <span className={styles.title}>BikerID</span>
-                <br />
-                {parcel?.biker || "--"}
-              </span>
+              {!parcel?.droppedAt && (
+                <span>
+                  <span className={styles.title}>pickedAt</span>
+                  <br />
+                  {parcel?.pickedAt || "--"}
+                </span>
+              )}
+              {parcel?.droppedAt && (
+                <span>
+                  <span className={styles.title}>droppedAt</span>
+                  <br />
+                  {parcel?.droppedAt || "--"}
+                </span>
+              )}
               <span>
                 <span className={styles.title}>Status</span>
                 <br />
-                {parcel?.biker ? "Picked" : "Not Picked"}
+                {!parcel?.biker
+                  ? "Not Picked"
+                  : !parcel?.droppedAt
+                  ? "Picked"
+                  : "Dropped"}
               </span>
-              {parcel?.biker ? null : (
+              {parcel?.biker ? (
+                <span>
+                  <button
+                    disabled={
+                      // you can't drop the parcel twice
+                      // you can't drop a parcel that's not yours
+                      Boolean(parcel?.droppedAt) || parcel?.biker !== user?.id
+                    }
+                    className={styles.button}
+                    onClick={() => handleDropping(parcel.id)}
+                  >
+                    Drop
+                  </button>
+                </span>
+              ) : (
                 <span>
                   <button
                     className={styles.button}

@@ -174,15 +174,28 @@ const Sender: React.FC<{ token: string; user: User | null }> = ({
                 <br />
                 {parcel.dropoffAddress}
               </span>
-              <span>
-                <span className={styles.title}>Biker</span>
-                <br />
-                {parcel?.biker || "--"}
-              </span>
+              {!parcel?.droppedAt && (
+                <span>
+                  <span className={styles.title}>pickedAt</span>
+                  <br />
+                  {parcel?.pickedAt || "--"}
+                </span>
+              )}
+              {parcel?.droppedAt && (
+                <span>
+                  <span className={styles.title}>droppedAt</span>
+                  <br />
+                  {parcel?.droppedAt || "--"}
+                </span>
+              )}
               <span>
                 <span className={styles.title}>Status</span>
                 <br />
-                {parcel?.biker ? "Picked" : "Not Picked"}
+                {!parcel?.biker
+                  ? "Not Picked"
+                  : !parcel?.droppedAt
+                  ? "Picked"
+                  : "Dropped"}
               </span>
             </div>
           );

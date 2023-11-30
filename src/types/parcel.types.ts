@@ -5,6 +5,8 @@ export interface Parcel {
   dropoffAddress: string;
   sender: number;
   biker?: number;
+  pickedAt?: string;
+  droppedAt?: string;
 }
 
 export interface CreateParcelDto {
