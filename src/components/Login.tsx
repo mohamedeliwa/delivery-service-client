@@ -23,13 +23,15 @@ const Login: React.FC<{
         }
       );
       const token = response.data.access_token as string;
-      
-      // TODO FETCH USER DATA
-      // const user = await  axios.
-      
-      
+
+      const user = await axios.get("http://localhost:8000/users/identity", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setUser(user.data);
       setToken(token);
-      
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log(error.response?.data.message);
