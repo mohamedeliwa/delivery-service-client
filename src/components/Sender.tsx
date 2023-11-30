@@ -47,6 +47,28 @@ const Sender: React.FC<{ token: string; user: User | null }> = ({
     };
   }, [user?.id]);
 
+  useEffect(() => {
+    const socket = io("http://localhost:8000/");
+
+    socket.on("parcel.updated", (parcel: Parcel) => {
+      if (parcel.sender === user?.id) {
+        setParcels((parcels) => {
+          return parcels.map((item) => {
+            if (item.id === parcel.id) {
+              return parcel;
+            } else {
+              return item;
+            }
+          });
+        });
+      }
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [user?.id]);
+
   const createParcel: React.FormEventHandler<HTMLFormElement> = async (e) => {
     try {
       e.preventDefault();
@@ -137,8 +159,8 @@ const Sender: React.FC<{ token: string; user: User | null }> = ({
               <span>Name: {parcel.name}</span>
               <span>Pick-up: {parcel.pickupAddress}</span>
               <span>Dropp-off: {parcel.dropoffAddress}</span>
-              <span>Biker: {parcel?.biker || "-"}</span>
-              <span>Status: picked up</span>
+              <span>Biker: {parcel?.biker || "--"}</span>
+              <span>Status: {parcel?.biker ? "Picked" : "Not Picked"}</span>
             </div>
           );
         })}
