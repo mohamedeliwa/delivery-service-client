@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Sender.module.css";
 import { User } from "@/types/user.types";
-import { CreateParcelDto } from "@/types/parcel.types";
+import { CreateParcelDto, Parcel } from "@/types/parcel.types";
 import axios from "axios";
+import io from "Socket.IO-client";
 
 const Sender: React.FC<{ token: string; user: User | null }> = ({
   token,
   user,
 }) => {
+  const [parcels, setParcels] = useState<Parcel[]>([]);
   const [createParcelDto, setCreateParcelDto] = useState<CreateParcelDto>({
     name: "",
     pickupAddress: "",
@@ -15,21 +17,41 @@ const Sender: React.FC<{ token: string; user: User | null }> = ({
     sender: user?.id || 0,
   });
 
-  const createParcel: React.FormEventHandler<HTMLFormElement> = async (e) => {
-    try {
-      e.preventDefault();
-      const response = await axios.post(
-        "http://localhost:8000/parcels/",
-        createParcelDto,
-        {
+  useEffect(() => {
+    if (parcels.length === 0) {
+      axios
+        .get(`http://localhost:8000/parcels?sender=${user?.id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
-      );
+        })
+        .then((response) => {
+          setParcels([...response.data]);
+        });
+    }
+  }, [parcels.length, token, user?.id]);
 
-      console.log({
-        parcel: response.data,
+  useEffect(() => {
+    const socket = io("http://localhost:8000/");
+
+    socket.on("parcel.created", (parcel: Parcel) => {
+      setParcels((parcels) => {
+        return [...parcels, parcel];
+      });
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+  const createParcel: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    try {
+      e.preventDefault();
+      await axios.post("http://localhost:8000/parcels/", createParcelDto, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -107,28 +129,17 @@ const Sender: React.FC<{ token: string; user: User | null }> = ({
       <hr style={{ width: "90vw", margin: "10px auto" }} />
       <div>
         <h3>List of your Parcels</h3>
-        <div className={styles.parcel}>
-          <span>Name: Jhone Deo</span>
-          <span>Pick-up: London </span>
-          <span>Dropp-off: NY</span>
-          <span>Biker: 1</span>
-          <span>Status: picked up</span>
-        </div>
-
-        <div className={styles.parcel}>
-          <span>Name: Jhone Deo</span>
-          <span>Pick-up: London </span>
-          <span>Dropp-off: NY</span>
-          <span>Biker: 1</span>
-          <span>Status: picked up</span>
-        </div>
-        <div className={styles.parcel}>
-          <span>Name: Jhone Deo</span>
-          <span>Pick-up: London </span>
-          <span>Dropp-off: NY</span>
-          <span>Biker: 1</span>
-          <span>Status: picked up</span>
-        </div>
+        {parcels.map((parcel) => {
+          return (
+            <div className={styles.parcel} key={parcel.id}>
+              <span>Name: {parcel.name}</span>
+              <span>Pick-up: {parcel.pickupAddress}</span>
+              <span>Dropp-off: {parcel.dropoffAddress}</span>
+              <span>Biker: {parcel?.biker || "-"}</span>
+              <span>Status: picked up</span>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
