@@ -59,9 +59,31 @@ const Biker: React.FC<{ token: string; user: User | null }> = ({
     };
   }, []);
 
+  const handlePicking = async (parcelID: number) => {
+    try {
+      const response = await axios.patch(
+        `http://localhost:8000/parcels/${parcelID}`,
+        {
+          biker: user?.id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log(error.response?.data.message);
+      } else {
+        console.log((error as Error).message);
+      }
+    }
+  };
+
   return (
     <div className={styles.container}>
-      Biker
+      <h1>Biker</h1>
       <div>
         <h3>List of All Parcels</h3>
         {parcels.map((parcel) => {
@@ -70,12 +92,17 @@ const Biker: React.FC<{ token: string; user: User | null }> = ({
               <span>Name: {parcel.name}</span>
               <span>Pick-up: {parcel.pickupAddress}</span>
               <span>Dropp-off: {parcel.dropoffAddress}</span>
-              <span>Sender: {parcel.sender}</span>
-              <span>Biker: {parcel?.biker || "--"}</span>
+              <span>SenderID: {parcel.sender}</span>
+              <span>BikerID: {parcel?.biker || "--"}</span>
               <span>Status: {parcel?.biker ? "Picked" : "Not Picked"}</span>
               {parcel?.biker ? null : (
                 <span>
-                  <button className={styles.button}>Pick</button>
+                  <button
+                    className={styles.button}
+                    onClick={() => handlePicking(parcel.id)}
+                  >
+                    Pick
+                  </button>
                 </span>
               )}
             </div>
