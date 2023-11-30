@@ -1,8 +1,14 @@
 import axios from "axios";
 import styles from "./Login.module.css";
 import { FormEventHandler, useState } from "react";
+import { User } from "@/types/user.types";
 
-const Login: React.FC = () => {
+const Login: React.FC<{
+  token: string;
+  user: User | null;
+  setToken: (token: string) => void;
+  setUser: (user: User) => void;
+}> = ({ token, user, setToken, setUser }) => {
   const [name, setName] = useState<string>("");
   const [password, setPassword] = useState("");
 
@@ -16,9 +22,14 @@ const Login: React.FC = () => {
           password,
         }
       );
-      console.log({
-        response,
-      });
+      const token = response.data.access_token as string;
+      
+      // TODO FETCH USER DATA
+      // const user = await  axios.
+      
+      
+      setToken(token);
+      
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log(error.response?.data.message);

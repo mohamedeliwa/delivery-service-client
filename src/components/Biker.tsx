@@ -1,6 +1,11 @@
 import React from "react";
 import styles from "./Biker.module.css";
-const Biker: React.FC = () => {
+import { User } from "@/types/user.types";
+
+const Biker: React.FC<{ token: string; user: User | null }> = ({
+  token,
+  user,
+}) => {
   return (
     <div className={styles.container}>
       Biker

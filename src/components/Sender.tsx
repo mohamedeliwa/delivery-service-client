@@ -1,7 +1,11 @@
 import React from "react";
 import styles from "./Sender.module.css";
+import { User } from "@/types/user.types";
 
-const Sender: React.FC = () => {
+const Sender: React.FC<{ token: string; user: User | null }> = ({
+  token,
+  user,
+}) => {
   const onFinish = () => {};
   return (
     <div className={styles.container}>
