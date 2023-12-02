@@ -21,6 +21,15 @@ $ npm install
 $ npm run dev
 ```
 
+## Loging in
+
+- All hardcoded accounts uses the same password which is `password`.
+- All senders accounts' names starts with `sender_*`.
+  > - refers to the number of the sender, we have 5 sender.
+  > - an example of sender account `name: sender_1` and `password: password`.
+- All bikers accounts' names starts with `biker_*`,
+  > - refers to the number of the biker, we have 10 bikers.
+
 ## Fulfilled Requirements
 
 - [x] A sender should be able to create a parcel to be delivered by specifying pick-up and drop-off address (should be just a text field, no need for address validation).
